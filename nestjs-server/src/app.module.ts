@@ -11,7 +11,7 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     UsersModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/speednotes', {
+    MongooseModule.forRoot('mongodb://localhost:27017/EXAMPLE', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),

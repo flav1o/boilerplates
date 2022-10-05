@@ -1,20 +1,21 @@
 version: '3.8'
 
 networks:
-    decalogue-network:
+    EXAMPLE-network:
+
 
 services:
     db:
         image: mongo:4.2.0
-        container_name: speednotes
+        container_name: EXAMPLE
         networks:
             default:
-            decalogue-network:
+            EXAMPLE-network:
         volumes:
-            - mongo-speednotes:/data/db
+            - mongo-EXAMPLE:/data/db
         ports:
             - 27017:27017
         restart: unless-stopped
 
 volumes:
-    mongo-speednotes:
+    mongo-EXAMPLE:
