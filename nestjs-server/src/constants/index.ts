@@ -1,1 +1,1 @@
-export * from './entities_keys-constants';
+export * from './entities-keys.constants';

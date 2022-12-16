@@ -11,8 +11,8 @@
 export interface User {
     _id: string;
     email: string;
-    password: string;
-    confirmationCode: string;
+    password?: Nullable<string>;
+    confirmationCode?: Nullable<string>;
     confirmed: boolean;
 }
 
