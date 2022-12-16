@@ -57,9 +57,9 @@ export class AuthService {
   }
 
   async signInGoogle(code: string): Promise<{ accessToken: string }> {
-    const user = await this.googleStrategy.validate(code);
+    const { email } = await this.googleStrategy.validate(code);
 
-    const accessToken = this.jwtService.sign({ email: '123' });
+    const accessToken = this.jwtService.sign({ email });
     return { accessToken };
   }
 

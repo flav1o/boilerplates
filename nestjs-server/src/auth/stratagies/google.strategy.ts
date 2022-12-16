@@ -10,7 +10,7 @@ export class GoogleStrategy {
     this.oauthClient = new OAuth2Client('');
   }
 
-  async validate(token: string): Promise<any> {
+  async validate(token: string): Promise<TokenPayload> {
     const ticket = await this.oauthClient.verifyIdToken({
       idToken: token,
       audience: '',
