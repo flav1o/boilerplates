@@ -9,6 +9,7 @@
 - [x] JWT Auth & Guards
 - [x] Current User Decorator
 - [x] Account Confirmation
+- [ ] Google Auth
 - [ ] Upload Files
 - [ ] Roles
 - [ ] Jest Tests
