@@ -1,5 +1,6 @@
 import { AuthService } from './auth.service';
 import { User } from 'src/graphql/graphql-schema';
+import { GoogleAuthDto } from './dto/google-auth.dto';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { CurrentUser } from 'src/common/decorators/getCurrentUser';
@@ -14,7 +15,7 @@ export class AuthController {
     return this.authService.signUp(userCreation);
   }
 
-  @Post('signin')
+  @Get('signin')
   async signIn(
     @Body() authCredentials: AuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
@@ -27,6 +28,11 @@ export class AuthController {
   ): Promise<{ accessToken }> {
     const { email, token } = query;
     return await this.authService.confirmAccount(email, token);
+  }
+
+  @Get('signin-google')
+  async signInGoogle(@Body() body: GoogleAuthDto): Promise<{ accessToken }> {
+    return await this.authService.signInGoogle(body.code);
   }
 
   @UseGuards(AuthGuard)

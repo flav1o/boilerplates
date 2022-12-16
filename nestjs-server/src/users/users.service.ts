@@ -28,6 +28,24 @@ export class UsersService {
     }).save();
   }
 
+  async createUserExternalAuth(email: string): Promise<User> {
+    const createUser = await new this.usersModel({
+      email,
+      password: null,
+      confirmed: true,
+      confirmationCode: null,
+    }).save();
+
+    if (!createUser) {
+      throw new HttpException(
+        'USERS.COULD_NOT_CREATE_USER_WITH_EXTERNAL_AUTH',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    return createUser;
+  }
+
   async findUserByEmail(email: string): Promise<User> {
     return await this.usersModel.findOne({ email });
   }

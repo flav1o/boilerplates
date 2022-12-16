@@ -3,14 +3,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from './dto/jwt-payload.interface';
+import { GoogleStrategy } from './stratagies/google.strategy';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
-    private jwtService: JwtService,
+    private readonly googleStrategy: GoogleStrategy,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -54,9 +56,17 @@ export class AuthService {
     return { accessToken };
   }
 
+  async signInGoogle(code: string): Promise<{ accessToken: string }> {
+    const { email } = await this.googleStrategy.validate(code);
+
+    const accessToken = this.jwtService.sign({ email });
+    return { accessToken };
+  }
+
   async confirmAccount(email: string, token: string): Promise<{ accessToken }> {
     const user = await this.usersService.confirmUser(email, token);
     const accessToken = await this.jwtService.sign({ email: user.email });
+
     return { accessToken };
   }
 }

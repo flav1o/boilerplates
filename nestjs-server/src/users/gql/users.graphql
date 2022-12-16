@@ -1,8 +1,8 @@
 type User {
   _id: ID!
   email: String!
-  password: String!
-  confirmationCode: String!
+  password: String
+  confirmationCode: String
   confirmed: Boolean!
 }
 
