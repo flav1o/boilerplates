@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { JwtPayload } from './dto/jwt-payload.interface';
-import { GoogleStrategy } from './stratagies/google.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
@@ -35,22 +35,30 @@ export class AuthService {
       authCredentialsDto.email,
     );
 
-    if (
-      !user ||
-      !(await bcrypt.compare(authCredentialsDto.password, user.password))
-    )
+    if (!user)
       throw new HttpException(
         'AUTH.INVALID_CREDENTIALS',
         HttpStatus.UNAUTHORIZED,
       );
 
-    if (!user.confirmed)
+    const arePasswordsMatching = await bcrypt.compare(
+      authCredentialsDto?.password,
+      user?.password,
+    );
+
+    if (!arePasswordsMatching)
+      throw new HttpException(
+        'AUTH.INVALID_CREDENTIALS',
+        HttpStatus.UNAUTHORIZED,
+      );
+
+    if (!user?.confirmed)
       throw new HttpException(
         'AUTH.USER_NOT_CONFIRMED',
         HttpStatus.UNAUTHORIZED,
       );
 
-    const payload: JwtPayload = { email: user.email };
+    const payload: JwtPayload = { email: user?.email };
     const accessToken: string = await this.jwtService.sign(payload);
 
     return { accessToken };
@@ -58,14 +66,14 @@ export class AuthService {
 
   async signInGoogle(code: string): Promise<{ accessToken: string }> {
     const { email } = await this.googleStrategy.validate(code);
-
     const accessToken = this.jwtService.sign({ email });
+
     return { accessToken };
   }
 
   async confirmAccount(email: string, token: string): Promise<{ accessToken }> {
     const user = await this.usersService.confirmUser(email, token);
-    const accessToken = await this.jwtService.sign({ email: user.email });
+    const accessToken = await this.jwtService.sign({ email: user?.email });
 
     return { accessToken };
   }
