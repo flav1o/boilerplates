@@ -3,7 +3,6 @@ version: '3.8'
 networks:
     EXAMPLE-network:
 
-
 services:
     db:
         image: mongo:4.2.0
