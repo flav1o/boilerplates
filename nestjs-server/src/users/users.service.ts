@@ -1,6 +1,5 @@
-import * as mongoose from 'mongoose';
-import { ENTITIES_KEYS } from 'src/constants';
 import { Model } from 'mongoose';
+import { ENTITIES_KEYS } from 'src/constants';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/graphql/graphql-schema';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -55,6 +54,12 @@ export class UsersService {
 
     if (!user)
       throw new HttpException('USERS.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
+
+    if (user?.confirmed)
+      throw new HttpException(
+        'USERS.USER_ALREADY_CONFIRMED',
+        HttpStatus.BAD_REQUEST,
+      );
 
     if (user.confirmationCode !== token)
       throw new HttpException('USERS.INVALID_TOKEN', HttpStatus.BAD_REQUEST);

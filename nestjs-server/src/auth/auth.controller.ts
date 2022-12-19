@@ -4,7 +4,7 @@ import { GoogleAuthDto } from './dto/google-auth.dto';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { CurrentUser } from 'src/common/decorators/getCurrentUser';
-import { Controller, Post, Body, Query, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -22,11 +22,11 @@ export class AuthController {
     return this.authService.signIn(authCredentials);
   }
 
-  @Post('confirmAccount')
+  @Post('confirm-account')
   async confirmAccount(
-    @Query() query: { token: string; email: string },
+    @Body() body: { token: string; email: string },
   ): Promise<{ accessToken }> {
-    const { email, token } = query;
+    const { email, token } = body;
     return await this.authService.confirmAccount(email, token);
   }
 
