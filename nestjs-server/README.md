@@ -10,8 +10,9 @@
 - [x] Current User Decorator
 - [x] Account Confirmation
 - [x] Google Auth
+- [x] Roles
+- [x] Public decorator
 - [ ] Upload Files
-- [ ] Roles
 - [ ] Jest Tests
 - [ ] Email Service
 - [ ] Environment Variables

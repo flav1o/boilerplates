@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { ENTITIES_KEYS } from 'src/constants';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/graphql/graphql-schema';
+import { Role, User } from 'src/graphql/graphql-schema';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -24,6 +24,7 @@ export class UsersService {
 
     await new this.usersModel({
       ...authCredentials,
+      roles: [Role.USER],
     }).save();
   }
 

@@ -1,10 +1,12 @@
 import { AuthService } from './auth.service';
-import { User } from 'src/graphql/graphql-schema';
 import { GoogleAuthDto } from './dto/google-auth.dto';
+import { Public } from 'src/common/guards/public.guard';
+import { Role, User } from 'src/graphql/graphql-schema';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import { CurrentUser } from 'src/common/decorators/getCurrentUser';
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { CurrentUser } from 'src/common/decorators/get-current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +39,14 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('me')
-  getUser(@CurrentUser() user: User): string {
-    return user.email;
+  getUser(@CurrentUser() user: User): User {
+    return user;
+  }
+
+  @Roles([Role.ADMIN])
+  @Public()
+  @Get('role-guard')
+  test() {
+    return 123;
   }
 }

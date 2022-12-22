@@ -4,6 +4,12 @@ type User {
   password: String
   confirmationCode: String
   confirmed: Boolean!
+  roles: [Role]
+}
+
+enum Role {
+  ADMIN
+  USER
 }
 
 type Query {
