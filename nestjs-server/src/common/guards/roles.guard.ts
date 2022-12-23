@@ -14,7 +14,6 @@ export class RolesGuard extends AuthGuard('jwt') implements CanActivate {
 
   getRequestContext(context: ExecutionContext) {
     if (context.getType() === 'http') {
-      console.log(context.switchToHttp().getRequest());
       return context.switchToHttp().getRequest();
     }
 
