@@ -12,6 +12,8 @@
 - [x] Google Auth
 - [x] Roles
 - [x] Public decorator
+- [x] Rate limit/Throttle
+- [ ] Two Factor Authentication
 - [ ] Upload Files
 - [ ] Jest Tests
 - [ ] Email Service
