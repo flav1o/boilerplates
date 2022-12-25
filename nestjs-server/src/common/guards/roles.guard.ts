@@ -1,10 +1,10 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { Role } from 'src/graphql/graphql-schema';
-import { ROLES_KEY } from '../decorators/roles.decorator';
 import { PUBLIC_KEY } from './public.guard';
+import { Role } from 'src/graphql/graphql-schema';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { ROLES_KEY } from '../decorators/roles.decorator';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class RolesGuard extends AuthGuard('jwt') implements CanActivate {
@@ -38,6 +38,6 @@ export class RolesGuard extends AuthGuard('jwt') implements CanActivate {
     const request = this.getRequestContext(context);
     const user = request.user;
 
-    return roles.includes(user.role);
+    return roles.some((role) => user.roles.includes(role));
   }
 }
